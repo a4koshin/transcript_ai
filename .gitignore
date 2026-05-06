@@ -1,0 +1,18 @@
+# Python
+backend/venv/
+__pycache__/
+*.pyc
+
+# uploads & generated files
+backend/uploads/
+backend/transcripts/
+
+# env
+.env
+
+# node
+frontend/node_modules/
+frontend/.next/
+
+# mac
+.DS_Store

@@ -1,5 +1,14 @@
 from fastapi import UploadFile, File
-from app.services.transcription_service import transcribe_audio_service
+from pydantic import BaseModel
+
+from app.services.transcription_service import (
+    transcribe_audio_service,
+    transcribe_url_service
+)
+
+
+class UrlTranscriptionRequest(BaseModel):
+    url: str
 
 
 async def transcribe_controller(file: UploadFile = File(...)):
@@ -7,6 +16,16 @@ async def transcribe_controller(file: UploadFile = File(...)):
 
     return {
         "success": True,
-        "message": "Transcription completed successfully",
+        "message": "File transcription completed successfully",
+        "text": text
+    }
+
+
+async def transcribe_url_controller(body: UrlTranscriptionRequest):
+    text = await transcribe_url_service(body.url)
+
+    return {
+        "success": True,
+        "message": "URL transcription completed successfully",
         "text": text
     }

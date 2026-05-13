@@ -6,6 +6,7 @@ import librosa
 
 from functools import lru_cache
 from transformers import Wav2Vec2ForCTC, AutoProcessor
+from app.services.text_formatter_service import format_transcript
 
 from app.core.config import (
     UPLOAD_DIR,
@@ -14,6 +15,8 @@ from app.core.config import (
     MODEL_NAME,
     TARGET_LANGUAGE
 )
+
+
 
 from app.services.audio_preprocessing_service import preprocess_audio
 from app.services.audio_chunking_service import split_audio_into_chunks
@@ -68,7 +71,10 @@ def transcribe_clean_audio(clean_path: str, file_id: str) -> str:
         if chunk_text:
             transcript_parts.append(chunk_text)
 
-    transcript_text = " ".join(transcript_parts)
+
+    raw_text = " ".join(transcript_parts)
+
+    transcript_text = format_transcript(raw_text)
 
     transcript_path = f"{TRANSCRIPT_DIR}/{file_id}.txt"
 
